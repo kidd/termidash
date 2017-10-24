@@ -1,0 +1,55 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: Termidash
+#+DATE: <2017-10-24 mar>
+#+AUTHOR: Raimon Grau
+#+EMAIL: raimonster@gmail.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 27.0.50 (Org mode 9.0.5)
+
+* What
+  Termidash is an attempt to get a dash docsets browser from the
+  terminal using fzf to pick from the options.
+
+
+  This repo contains a few tests and trials about how to achieve a
+  neat experience without coding for the corner cases, but in a stream
+  oriented way, using pipes, and maybe using the help of some
+  temporary file.
+
+  The whole story starts when developing
+  https://www.github.com/areina/helm-dash, that the application itself
+  seems like it should be just a pipe of:
+
+  list -> chose(fzf) -> open-doc
+
+  The fact that unix pipes do not allow to pass any other datatype
+  than strings, and the separator is \n, makes it difficult to "hide"
+  information in the middle steps that would be recovered afterwards.
+
+  I thought I'd need something like a shwartzian transform but for
+  pipes.
+
+  I also got to something semi useful with just 5 lines of bash, but
+  the experience is not really smooth, so I wanted to try some other
+  approaches to the same problem
+
+  Here are the 5 lines that kinda solve the problem.
+  #+BEGIN_SRC bash
+ function search() {
+    ds=$(ls ~/.docsets/**/*dsidx | fzf)
+    sqlite3 $ds 'select * from searchIndex' |
+    cut -d\| -f 2 |
+    fzf --preview "lynx $(dirname $ds)/Documents/{}" |
+    xargs -I{} sqlite3 $ds "select path from searchIndex where name = '{}'" XA -I{} google-chrome "$(dirname $ds)/Documents/{}" }
+  #+END_SRC
+
+  So this repo contains:
+  - a racket app that mimics helm-dash user experience.
+  - a bash directory with another app that mimics the helm-dash experience.
+  - [[https://github.com/flonatel/pipexec]] trial and error.
