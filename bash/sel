@@ -1,0 +1,8 @@
+#!/bin/bash
+function ss  {
+
+    sqlite3 ~/.docsets/$1.docset/Contents/Resources/docSet.dsidx 'select name,path from searchIndex'
+}
+
+ss AllegroLisp | sed -e 's/^/AllegroLisp|/'
+ss Clojure | sed -e 's/^/Clojure|/'

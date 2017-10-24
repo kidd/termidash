@@ -1,0 +1,15 @@
+#!/bin/bash
+  pipexec  -- \
+  [SEL ./sel ]  \
+  [PTEE /usr/bib/ptee 3 4] \
+  [PREPMEN ./prepmen ] \
+  [PREPOUT ./prepout ] \
+  [NUM /bin/cat -n ] \
+  [GREP ~/bin/fzf ] \
+  [MATCH ./match ]  \
+
+ '{SEL:1>PTEE:0}'    \
+ '{PTEE:3>PREPMEN:0}'\
+ '{PREPMEN:1>FZF:0}' \
+ '{PTEE:4>PREPOUT:0}'\
+ '{FZF:1>PREPOUT:3}' \

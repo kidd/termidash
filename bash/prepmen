@@ -1,0 +1,2 @@
+#!/bin/bash
+cut -d\| -f1,2 | sed -e 's/|/ /' -e 's/^ *//' | cat -n

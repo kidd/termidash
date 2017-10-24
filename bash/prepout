@@ -1,0 +1,4 @@
+#!/bin/bash
+#exec 3>0
+#cat
+  echo "A"

@@ -1,0 +1,4 @@
+#!/bin/bash
+function match {
+      sqlite3 ~/.docsets/$1.docset/Contents/Resources/docSet.dsidx 'select path from searchIndex '
+  }

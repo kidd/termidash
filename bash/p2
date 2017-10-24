@@ -1,0 +1,6 @@
+#!/bin/bash
+  pipexec  -- \
+  [SEL /bin/ls ]  \
+  [PREPOUT ./prepout ] \
+
+  '{SEL:1>PREPOUT:0}'
